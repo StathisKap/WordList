@@ -1,21 +1,24 @@
 #include <stdio.h>
+#include <string.h>
 #include <unistd.h>
 #include "encrypt.h"
 
 int main(int argc , char * argv[])
 {
     char ch;
-    char word[20], line[150];
+    char word[20], line[150], fileType[3], fileName[30];
     int encryption = 0, list = 0;
 
     FILE *in = fopen(argv[1],"r");
-    FILE *out = fopen(argv[2],"a");
+    strcpy(fileType,"a");
+    strcpy(fileName,argv[2]);
 
     while ((ch = getopt(argc,argv,"el"))!= EOF)
         switch (ch)
         {
             case 'e':
                 encryption = 1;
+                strcpy(fileType,"w");
             break;
             case 'l':
                 list = 1;
@@ -24,8 +27,11 @@ int main(int argc , char * argv[])
                 fprintf(stderr,"Error - unknown option");
             return 1;
         }
+
     argc -= optind;
     argv += optind;
+
+    FILE *out = fopen(fileName,fileType);
 
     if (list == 0)
     {
