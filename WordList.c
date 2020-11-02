@@ -2,7 +2,9 @@
 #include <string.h>
 #include <unistd.h>
 #include "encrypt.h"
+#include "Word_Instances.h"
 #include "List.h"
+
 
 int main(int argc , char * argv[])
 {
