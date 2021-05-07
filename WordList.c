@@ -11,22 +11,27 @@ int main(int argc , char * argv[])
     char ch;
     char word[20], line[150], fileType[3], fileName[30];
     int encryption = 0, list = 0;
-
+//
+//Set the default for the out file as append+ and the second argument given
+//
     FILE *in = fopen(argv[1],"r");
     strcpy(fileType,"a+");
     strcpy(fileName,argv[2]);
 
-    while ((ch = getopt(argc,argv,"el"))!= EOF)
+    while ((ch = getopt(argc,argv,"elw"))!= EOF)
         switch (ch)
         {
-            case 'e':
+            case 'e': //Encryption Option
                 encryption = 1;
                 strcpy(fileType,"w");
             break;
-            case 'l':
+            case 'l': //List Option
                 list = 1;
             break;
-            default:
+            case 'w': // write the file instead of appending to it
+                strcpy(fileType,"w");
+            break;
+            default: //If something else is given, give an error
                 fprintf(stderr,"Error - unknown option");
             return 1;
         }
@@ -37,10 +42,12 @@ int main(int argc , char * argv[])
     FILE *out = fopen(fileName,fileType);
 
 
-
+//
+// Check which options are chosen and call the appropriate Functions
+//
     if (list == 0)
     {
-        while (EOF && fscanf(in, "%149[^\n]\n", line)==1) 
+        while (EOF && fscanf(in, "%149s[^\n]\n", line)==1) 
         {
             if(encryption == 1)
             encrypt(line);
